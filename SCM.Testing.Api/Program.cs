@@ -1,10 +1,12 @@
 using System.Reflection;
+using ActiveMQ.Artemis.Client.Extensions.DependencyInjection;
 using SCM.Shared.Infrastructure;
 using SCM.Shared.Infrastructure.Messaging.Outbox;
 using SCM.Shared.Infrastructure.Modules;
 using SCM.Shared.Infrastructure.Postgres;
 using SCM.SharedEnabler.Modules;
 using SCM.Testing.Api.DAL;
+using SCM.Testing.Api.Messages;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +23,10 @@ foreach (var module in _modules)
 builder.Services.AddPostgres<TestDbContext>()
     .AddOutbox<TestDbContext>()
     .AddUnitOfWork<TestUnitOfWork>();
+
+var endpoints = new[] { ActiveMQ.Artemis.Client.Endpoint.Create(host: "localhost", port: 5672, "guest", "guest") };
+builder.Services.AddActiveMq("bookstore-cluster", endpoints)
+                .AddAnonymousProducer<MessageProducer>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

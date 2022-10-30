@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using SCM.SharedEnabler.Messaging;
 using SCM.SharedEnabler.Time;
 using SCM.Testing.Api.Events;
+using SCM.Testing.Api.Messages;
 
 namespace SCM.Testing.Api.Controllers;
 
@@ -18,11 +19,14 @@ public class WeatherForecastController : ControllerBase
     private readonly IMessageBroker _messageBroker;
     private readonly IClock _clock;
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly MessageProducer _messageProducer;
 
-    public WeatherForecastController(IClock clock, IMessageBroker messageBroker, ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(IClock clock, IMessageBroker messageBroker, 
+        MessageProducer messageProducer, ILogger<WeatherForecastController> logger)
     {
         _clock = clock;
         _messageBroker = messageBroker;
+        _messageProducer = messageProducer;
         _logger = logger;
     }
 
@@ -44,5 +48,6 @@ public class WeatherForecastController : ControllerBase
         var cancellationToken = new CancellationToken();
         var accountCreatedEvent = new AccountCreated(Guid.NewGuid(), Guid.NewGuid(), "AED", 100);
         await _messageBroker.PublishAsync(accountCreatedEvent, cancellationToken);
+        await _messageProducer.PublishAsync(@accountCreatedEvent);
     }
 }

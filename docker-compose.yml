@@ -1,0 +1,24 @@
+services:
+  mydb:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+  activemq-artemis:
+    container_name: activemq-artemis
+    image: vromero/activemq-artemis
+    environment:
+      - ARTEMIS_USERNAME=guest
+      - ARTEMIS_PASSWORD=guest
+    ports:
+      - 5672:5672
+      - 8161:8161
+ 
+volumes:
+  db-data:
+    driver: local

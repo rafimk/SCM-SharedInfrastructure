@@ -11,6 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="ArtemisNetClient" Version="2.10.1" />
+      <PackageReference Include="ArtemisNetClient.Extensions.DependencyInjection" Version="2.10.1" />
+      <PackageReference Include="ArtemisNetClient.Extensions.Hosting" Version="2.10.1" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
